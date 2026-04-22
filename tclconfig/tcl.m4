@@ -132,6 +132,60 @@ AC_DEFUN([TEA_PATH_TCLCONFIG], [
 		done
 	    fi
 
+
+	    if test x"${ac_cv_c_tclconfig}" = x ; then
+		# check for pkg-config
+		if test x"${PKG_CONFIG}" = x ; then
+		    AC_PATH_TOOL([PKG_CONFIG], [pkg-config], [:])
+		fi
+		if test x"${PKG_CONFIG}" != x":" ; then
+		    for i in tcl tcl9.0 tcl8.7 tcl8.6 tcl8.5; do
+			if ${PKG_CONFIG} --exists $i 2>/dev/null; then
+			    pkgconf_libdir=`${PKG_CONFIG} --variable=libdir $i`
+			    if test -f "$pkgconf_libdir/tclConfig.sh" ; then
+				ac_cv_c_tclconfig="`(cd $pkgconf_libdir; pwd)`"
+				break
+			    fi
+			fi
+		    done
+		fi
+	    fi
+
+	    if test x"${ac_cv_c_tclconfig}" = x ; then
+		# check for pkg-config
+		if test x"${PKG_CONFIG}" = x ; then
+		    AC_PATH_TOOL([PKG_CONFIG], [pkg-config], [:])
+		fi
+		if test x"${PKG_CONFIG}" != x":" ; then
+		    for i in tcl tcl9.0 tcl8.7 tcl8.6 tcl8.5; do
+			if ${PKG_CONFIG} --exists $i 2>/dev/null; then
+			    pkgconf_libdir=`${PKG_CONFIG} --variable=libdir $i`
+			    if test -f "$pkgconf_libdir/tclConfig.sh" ; then
+				ac_cv_c_tclconfig="`(cd $pkgconf_libdir; pwd)`"
+				break
+			    fi
+			fi
+		    done
+		fi
+	    fi
+
+	    if test x"${ac_cv_c_tkconfig}" = x ; then
+		# check for pkg-config
+		if test x"${PKG_CONFIG}" = x ; then
+		    AC_PATH_TOOL([PKG_CONFIG], [pkg-config], [:])
+		fi
+		if test x"${PKG_CONFIG}" != x":" ; then
+		    for i in tk tk9.0 tk8.7 tk8.6 tk8.5; do
+			if ${PKG_CONFIG} --exists $i 2>/dev/null; then
+			    pkgconf_libdir=`${PKG_CONFIG} --variable=libdir $i`
+			    if test -f "$pkgconf_libdir/tkConfig.sh" ; then
+				ac_cv_c_tkconfig="`(cd $pkgconf_libdir; pwd)`"
+				break
+			    fi
+			fi
+		    done
+		fi
+	    fi
 	    # check in a few common install locations
 	    if test x"${ac_cv_c_tclconfig}" = x ; then
 		for i in `ls -d ${libdir} 2>/dev/null` \
@@ -142,6 +196,10 @@ AC_DEFUN([TEA_PATH_TCLCONFIG], [
 			`ls -d /usr/pkg/lib 2>/dev/null` \
 			`ls -d /usr/lib 2>/dev/null` \
 			`ls -d /usr/lib64 2>/dev/null` \
+                        `ls -d /usr/lib/`arch`-linux-gnu 2>/dev/null` \
+                        `ls -d /usr/lib/`uname -m`-linux-gnu 2>/dev/null` \
+                        `ls -d /usr/lib/`arch`-linux-gnu 2>/dev/null` \
+                        `ls -d /usr/lib/`uname -m`-linux-gnu 2>/dev/null` \
 			`ls -d /usr/lib/tcl9.0 2>/dev/null` \
 			`ls -d /usr/lib/tcl8.7 2>/dev/null` \
 			`ls -d /usr/lib/tcl8.6 2>/dev/null` \
@@ -302,6 +360,10 @@ AC_DEFUN([TEA_PATH_TKCONFIG], [
 			`ls -d /usr/lib/tk8.5 2>/dev/null` \
 			`ls -d /usr/lib 2>/dev/null` \
 			`ls -d /usr/lib64 2>/dev/null` \
+                        `ls -d /usr/lib/`arch`-linux-gnu 2>/dev/null` \
+                        `ls -d /usr/lib/`uname -m`-linux-gnu 2>/dev/null` \
+                        `ls -d /usr/lib/`arch`-linux-gnu 2>/dev/null` \
+                        `ls -d /usr/lib/`uname -m`-linux-gnu 2>/dev/null` \
 			`ls -d /usr/local/lib/tk9.0 2>/dev/null` \
 			`ls -d /usr/local/lib/tk8.7 2>/dev/null` \
 			`ls -d /usr/local/lib/tk8.6 2>/dev/null` \
@@ -3820,6 +3882,10 @@ AC_DEFUN([TEA_PATH_CONFIG], [
 			`ls -d /usr/pkg/lib 2>/dev/null` \
 			`ls -d /usr/lib 2>/dev/null` \
 			`ls -d /usr/lib64 2>/dev/null` \
+                        `ls -d /usr/lib/`arch`-linux-gnu 2>/dev/null` \
+                        `ls -d /usr/lib/`uname -m`-linux-gnu 2>/dev/null` \
+                        `ls -d /usr/lib/`arch`-linux-gnu 2>/dev/null` \
+                        `ls -d /usr/lib/`uname -m`-linux-gnu 2>/dev/null` \
 			; do
 		    if test -f "$i/$1Config.sh" ; then
 			ac_cv_c_$1config=`(cd $i; pwd)`
