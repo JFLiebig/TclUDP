@@ -38,6 +38,30 @@ AC_PREREQ([2.69])
 #------------------------------------------------------------------------
 
 AC_DEFUN([TEA_PATH_TCLCONFIG], [
+	    if test x"${ac_cv_c_tclconfig}" = x ; then
+		# check for pkg-config
+		if test x"${PKG_CONFIG}" = x ; then
+		    AC_PATH_TOOL([PKG_CONFIG], [pkg-config], [:])
+		fi
+		if test x"${PKG_CONFIG}" != x":" ; then
+		    for i in tcl tcl9.0 tcl8.7 tcl8.6 tcl8.5; do
+			if ${PKG_CONFIG} --exists $i 2>/dev/null; then
+			    pkgconf_libdir=`${PKG_CONFIG} --variable=libdir $i`
+			    if test -f "$pkgconf_libdir/tclConfig.sh" ; then
+				ac_cv_c_tclconfig="`(cd $pkgconf_libdir; pwd)`"
+				break
+			    fi
+			    # Check versioned subdirectory
+			    pkgconf_v=`${PKG_CONFIG} --modversion $i | cut -d. -f1,2`
+			    if test -f "$pkgconf_libdir/tcl$pkgconf_v/tclConfig.sh" ; then
+				ac_cv_c_tclconfig="`(cd $pkgconf_libdir/tcl$pkgconf_v; pwd)`"
+				break
+			    fi
+			fi
+		    done
+		fi
+	    fi
+
     dnl TEA specific: Make sure we are initialized
     AC_REQUIRE([TEA_INIT])
     #
@@ -142,6 +166,9 @@ AC_DEFUN([TEA_PATH_TCLCONFIG], [
 			`ls -d /usr/pkg/lib 2>/dev/null` \
 			`ls -d /usr/lib 2>/dev/null` \
 			`ls -d /usr/lib64 2>/dev/null` \
+			`ls -d /usr/lib/*-linux-gnu 2>/dev/null` \
+			`ls -d /usr/lib/*-linux-gnu/tcl[8-9].[0-9]* 2>/dev/null` \
+			`ls -d /usr/lib/*-linux-gnu/tk[8-9].[0-9]* 2>/dev/null` \
 			`ls -d /usr/lib/tcl9.0 2>/dev/null` \
 			`ls -d /usr/lib/tcl8.7 2>/dev/null` \
 			`ls -d /usr/lib/tcl8.6 2>/dev/null` \
@@ -212,6 +239,30 @@ AC_DEFUN([TEA_PATH_TCLCONFIG], [
 #------------------------------------------------------------------------
 
 AC_DEFUN([TEA_PATH_TKCONFIG], [
+	    if test x"${ac_cv_c_tkconfig}" = x ; then
+		# check for pkg-config
+		if test x"${PKG_CONFIG}" = x ; then
+		    AC_PATH_TOOL([PKG_CONFIG], [pkg-config], [:])
+		fi
+		if test x"${PKG_CONFIG}" != x":" ; then
+		    for i in tk tk9.0 tk8.7 tk8.6 tk8.5; do
+			if ${PKG_CONFIG} --exists $i 2>/dev/null; then
+			    pkgconf_libdir=`${PKG_CONFIG} --variable=libdir $i`
+			    if test -f "$pkgconf_libdir/tkConfig.sh" ; then
+				ac_cv_c_tkconfig="`(cd $pkgconf_libdir; pwd)`"
+				break
+			    fi
+			    # Check versioned subdirectory
+			    pkgconf_v=`${PKG_CONFIG} --modversion $i | cut -d. -f1,2`
+			    if test -f "$pkgconf_libdir/tk$pkgconf_v/tkConfig.sh" ; then
+				ac_cv_c_tkconfig="`(cd $pkgconf_libdir/tk$pkgconf_v; pwd)`"
+				break
+			    fi
+			fi
+		    done
+		fi
+	    fi
+
     #
     # Ok, lets find the tk configuration
     # First, look for one uninstalled.
@@ -302,6 +353,9 @@ AC_DEFUN([TEA_PATH_TKCONFIG], [
 			`ls -d /usr/lib/tk8.5 2>/dev/null` \
 			`ls -d /usr/lib 2>/dev/null` \
 			`ls -d /usr/lib64 2>/dev/null` \
+			`ls -d /usr/lib/*-linux-gnu 2>/dev/null` \
+			`ls -d /usr/lib/*-linux-gnu/tcl[8-9].[0-9]* 2>/dev/null` \
+			`ls -d /usr/lib/*-linux-gnu/tk[8-9].[0-9]* 2>/dev/null` \
 			`ls -d /usr/local/lib/tk9.0 2>/dev/null` \
 			`ls -d /usr/local/lib/tk8.7 2>/dev/null` \
 			`ls -d /usr/local/lib/tk8.6 2>/dev/null` \
@@ -3820,6 +3874,9 @@ AC_DEFUN([TEA_PATH_CONFIG], [
 			`ls -d /usr/pkg/lib 2>/dev/null` \
 			`ls -d /usr/lib 2>/dev/null` \
 			`ls -d /usr/lib64 2>/dev/null` \
+			`ls -d /usr/lib/*-linux-gnu 2>/dev/null` \
+			`ls -d /usr/lib/*-linux-gnu/tcl[8-9].[0-9]* 2>/dev/null` \
+			`ls -d /usr/lib/*-linux-gnu/tk[8-9].[0-9]* 2>/dev/null` \
 			; do
 		    if test -f "$i/$1Config.sh" ; then
 			ac_cv_c_$1config=`(cd $i; pwd)`
